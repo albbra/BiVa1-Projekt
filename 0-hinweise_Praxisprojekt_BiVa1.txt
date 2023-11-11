@@ -1,0 +1,31 @@
+Praxisprojekt BiVa1
+===================
+
+Das Praxisprojekt umfasst eine Programmieraufgabe und deren Präsentation.
+
+Aufgabe allgemein: Manipulation/Auswertung von Kamerabildern in Echtzeit
+- Erkennen/Unterscheiden von Dingen
+- künstlerisches Verfremden
+- ...
+
+Folgende Varianten sind möglich:
+* mit Matlab,
+* mit C/C++ und OpenCV,
+* mit Java (Android Studio) für eine Smartphone-App (FaceLenses o.ä),
+* in mehreren Gruppen: Nachprogrammierung eines interaktiven PingPong-Spiels mit Matlab
+* openCV-Tool programmieren zur Live-Anzeige des Kamera-Bildes und GUI für Parameter-Einstellung 	+ cv::VideoCapture cap(0); cap.set(CV_CAP_PROP_SETTINGS, 0); //opens camera properties dialog
+	
+
+Vorhandener Quellcode (vorgebenen oder aus anderen Quellen) darf als Basis verwendet werden.
+Änderungen zum Original-Quellcode müssen erläutert werden.
+Je nach Originalität, Aufwand und Schwierigkeitsgrad wird die praktische Arbeit bewertet.
+Das Nutzen von Internetressourcen ist ausdrücklich erlaubt, wenn die Quelle benannt wird, sinnvolle Änderungen vorgenommen werden und der Quellcode erläutert werden kann (Präsentation am Ende des Moduls).
+
+Die Software muss das Auswählen der Kamera (intern, USB-Cam) erlauben.
+
+Kommunikation:
+* jedes Team gibt sich einen Namen 
+* !!! bei Email-Korrespondenz ist folgende Betreffzeile zu verwenden:
+  "Modul-BiVa1, Team-Name, Anliegen"
+* idealer Weise erfolgt die Kommunikation über die Team-SprecherIn
+

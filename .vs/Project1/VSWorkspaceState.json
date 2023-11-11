@@ -1,0 +1,14 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Lokaler Computer": [
+      "Project1\\out\\build\\x64-debug",
+      "Project1\\out\\install\\x64-debug",
+      "Project1\\out\\build\\x64-release",
+      "Project1\\out\\install\\x64-release",
+      "Project1\\out\\build\\x86-debug",
+      "Project1\\out\\install\\x86-debug",
+      "Project1\\out\\build\\x86-release",
+      "Project1\\out\\install\\x86-release"
+    ]
+  }
+}
