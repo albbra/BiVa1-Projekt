@@ -24,7 +24,7 @@ class PunktoperatorenApp:
         # Aktiver Button
         self.active_button = None
 
-        # Erstelle Histogramm-Figuren und Canvas-Objekte für Hauptvideo und Originalbild
+        # Erstelle Histogramm-Figuren und Canvas-Objekte für Originalbbild und Punktoperatoren
         self.fig_main, self.ax_main = plt.subplots()
         self.canvas_main = FigureCanvasTkAgg(self.fig_main, master=self.root)
         self.canvas_main_widget = self.canvas_main.get_tk_widget()
@@ -74,11 +74,11 @@ class PunktoperatorenApp:
 
 
 
-        # Label für das Hauptvideo
+        # Label für das Originalvideo
         self.label = tk.Label(self.root)
         self.label.grid(row=1, column=0, padx=10, pady=10)
 
-        # Label für das zweite Video (Originalbild)
+        # Label für das zweite Video (Punktoperatoren)
         self.label_original = tk.Label(self.root)
         self.label_original.grid(row=1, column=1, padx=100, pady=10)  
 
@@ -151,17 +151,17 @@ class PunktoperatorenApp:
         if ret:
             rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            # Verarbeitung für das Hauptvideo
+            # Verarbeitung für das Originalvideo
             processed_image_main = self.processing_function_main(rgb_image)
 
-            # Verkleinere das Bild für das Hauptvideo
+            # Verkleinere das Bild für das Originalvideo
             small_image_main = cv2.resize(processed_image_main, (640, 480))
             img_main = Image.fromarray(small_image_main)
             img_tk_main = ImageTk.PhotoImage(image=img_main)
             self.label.img = img_tk_main
             self.label.config(image=img_tk_main)
 
-            # Berechne und zeichne Histogramm für Hauptvideo
+            # Berechne und zeichne Histogramm für Originalvideo
             hist_main = cv2.calcHist([processed_image_main], [0], None, [256], [0, 256])
             self.ax_main.clear()
             self.ax_main.plot(hist_main)
