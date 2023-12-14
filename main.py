@@ -280,13 +280,45 @@ class PunktoperatorenApp:
         return new_image
 
     def apply_normalisierung(self, rgb_image):
-        return rgb_image #TODO
+        # Normalize the image to the range [0, 1]
+        normalized_image = rgb_image / 255.0
+
+        #minimum and maximum values
+        minimum=normalized_image.min()
+        maximum=normalized_image.max()
+
+        # Calculate Normalization
+        normed_image = (normalized_image-minimum)*(1/(maximum-minimum))
+
+        # Convert back to the range [0, 255]
+        new_image = (normed_image * 255).astype(np.uint8)
+
+        return new_image
 
     def apply_histogrammausgleich(self, rgb_image):
         return rgb_image #TODO
 
     def apply_binarisierung(self, rgb_image):
-        return rgb_image #TODO
+        #get grey image
+        grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+
+        # Normalize the image to the range [0, 1]
+        normalized_image = grey_image / 255.0
+
+        #entscheidungsgrenze
+        try:
+            wert = min(100,max(0, float(self.input_field.get()))) / 100.0
+        except ValueError:
+            wert = 0.5
+        normalized_plus_image = normalized_image + wert
+
+        # round it down to 0 or 1
+        binary_image = normalized_plus_image.astype(np.uint8)
+
+        # Convert back to the range [0, 255]
+        new_image = (binary_image * 255).astype(np.uint8)
+
+        return new_image
     
     def update_button_style(self):
         pass  # Stil wird nun in set_active_button gesetzt
