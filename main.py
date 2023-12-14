@@ -60,13 +60,48 @@ class PunktoperatorenApp:
             button_frame, text="Negativ", command=self.apply_negative_processing, **self.button_style_inactive)
         self.negative_button.pack(side=tk.LEFT)
 
+        # "Helligkeitserhöhung" Button
+        self.helligkeitserhoehung_button = tk.Button(
+            button_frame, text="Helligkeitserhöhung", command=self.apply_helligkeitserhoehung_processing, **self.button_style_inactive)
+        self.helligkeitserhoehung_button.pack(side=tk.LEFT)
+
+        # "Helligkeitsverminderung" Button
+        self.helligkeitsverminderung_button = tk.Button(
+            button_frame, text="Helligkeitsverminderung", command=self.apply_helligkeitsverminderung_processing, **self.button_style_inactive)
+        self.helligkeitsverminderung_button.pack(side=tk.LEFT)
+
+        # "Kontrasterhöhung" Button
+        self.kontrasterhoehung_button = tk.Button(
+            button_frame, text="Kontrasterhöhung", command=self.apply_kontrasterhoehung_processing, **self.button_style_inactive)
+        self.kontrasterhoehung_button.pack(side=tk.LEFT)
+
+        # "Kontrastverminderung" Button
+        self.kontrastverminderung_button = tk.Button(
+            button_frame, text="Kontrastverminderung", command=self.apply_kontrastverminderung_processing, **self.button_style_inactive)
+        self.kontrastverminderung_button.pack(side=tk.LEFT)
+
+        # "Normalisierung" Button
+        self.normalisierung_button = tk.Button(
+            button_frame, text="Normalisierung", command=self.apply_normalisierung_processing, **self.button_style_inactive)
+        self.normalisierung_button.pack(side=tk.LEFT)
+
+        # "Histogrammausgleich" Button
+        self.histogrammausgleich_button = tk.Button(
+            button_frame, text="Histogrammausgleich", command=self.apply_histogrammausgleich_processing, **self.button_style_inactive)
+        self.histogrammausgleich_button.pack(side=tk.LEFT)
+
+        # "Binarisierung" Button
+        self.binarisierung_button = tk.Button(
+            button_frame, text="Binarisierung", command=self.apply_binarisierung_processing, **self.button_style_inactive)
+        self.binarisierung_button.pack(side=tk.LEFT)
+
         #Hier weitere Buttons anlegen zum Darstellen    <-----------------------------------------------------------------
         #genauso wie oben runterkopieren und namen umändern - Albert 
         #Zum Beispiel für eine Punktoperation a:
         # "a" Button
         #self.a_button = tk.Button(
         #    button_frame, text="a", command=self.apply_a_processing, **self.button_style_inactive)
-        #self.negative_button.pack(side=tk.LEFT)
+        #self.a_button.pack(side=tk.LEFT)
 
 
 
@@ -102,6 +137,49 @@ class PunktoperatorenApp:
             self.set_processing_function(self.apply_negative)
             self.update_button_style()
 
+    def apply_helligkeitserhoehung_processing(self):
+        if self.active_button != self.helligkeitserhoehung_button:
+            self.set_active_button(self.helligkeitserhoehung_button)
+            self.set_processing_function(self.apply_helligkeitserhoehung)
+            self.update_button_style()
+
+    def apply_helligkeitsverminderung_processing(self):
+        if self.active_button != self.helligkeitsverminderung_button:
+            self.set_active_button(self.helligkeitsverminderung_button)
+            self.set_processing_function(self.apply_helligkeitsverminderung)
+            self.update_button_style()
+
+    def apply_kontrasterhoehung_processing(self):
+        if self.active_button != self.kontrasterhoehung_button:
+            self.set_active_button(self.kontrasterhoehung_button)
+            self.set_processing_function(self.apply_kontrasterhoehung)
+            self.update_button_style()
+
+    def apply_kontrastverminderung_processing(self):
+        if self.active_button != self.kontrastverminderung_button:
+            self.set_active_button(self.kontrastverminderung_button)
+            self.set_processing_function(self.apply_kontrastverminderung)
+            self.update_button_style()
+
+    def apply_normalisierung_processing(self):
+        if self.active_button != self.normalisierung_button:
+            self.set_active_button(self.normalisierung_button)
+            self.set_processing_function(self.apply_normalisierung)
+            self.update_button_style()
+
+    def apply_histogrammausgleich_processing(self):
+        if self.active_button != self.histogrammausgleich_button:
+            self.set_active_button(self.histogrammausgleich_button)
+            self.set_processing_function(self.apply_histogrammausgleich)
+            self.update_button_style()
+
+    def apply_binarisierung_processing(self):
+        if self.active_button != self.binarisierung_button:
+            self.set_active_button(self.binarisierung_button)
+            self.set_processing_function(self.apply_binarisierung)
+            self.update_button_style()
+
+
     #Nun geben wir den Buttons auch Logik    <-----------------------------------------------------------------
     #Beispiel wieder für a
     #def apply_a_processing(self):
@@ -131,6 +209,27 @@ class PunktoperatorenApp:
 
     def apply_negative(self, rgb_image):
         return 255 - rgb_image
+    
+    def apply_helligkeitserhoehung(self, rgb_image):
+        return rgb_image + 32 #TODO
+    
+    def apply_helligkeitsverminderung(self, rgb_image):
+        return rgb_image - 32 #TODO
+
+    def apply_kontrasterhoehung(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_kontrastverminderung(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_normalisierung(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_histogrammausgleich(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_binarisierung(self, rgb_image):
+        return rgb_image #TODO
     
     #Hier legt ihr noch die richtige Funktion für den Punktoperator an    <-----------------------------------------------------------------
     #Wieder am Beispiel für a
