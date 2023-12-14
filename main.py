@@ -4,16 +4,13 @@ from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-#pip install opencv-python
-#pip install Pillow
-#pip install matplotlib
+import numpy as np
 
 class PunktoperatorenApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Punktoperatoren Anwendung")
-        self.root.geometry("1400x1200")
+        self.root.geometry("1300x1200")
 
         self.cap = cv2.VideoCapture(0)
 
@@ -117,7 +114,23 @@ class PunktoperatorenApp:
 
         # Label für das zweite Video (Punktoperatoren)
         self.label_original = tk.Label(self.root)
-        self.label_original.grid(row=2, column=1, padx=10, pady=0)  
+        self.label_original.grid(row=2, column=1, padx=10, pady=0) 
+
+        # Frame for additional buttons
+        button_frame3 = tk.Frame(self.root)
+        button_frame3.grid(row=1, column=1, padx=10, pady=2, sticky="nw")
+
+        # Create color buttons
+        self.color_buttons = {}
+        self.active_color_button = None
+
+        colors = ["Bunt", "Grau", "Rot", "Grün", "Blau"]
+
+        for color in colors:
+            button = tk.Button(button_frame3, text=color, command=lambda c=color: self.set_color_processing(c),
+                              **self.button_style_inactive)
+            button.pack(side=tk.LEFT)
+            self.color_buttons[color] = button
 
         self.update_feed()
 
@@ -204,33 +217,67 @@ class PunktoperatorenApp:
             wert = min(255,(abs(int(self.input_field.get()))))
         except ValueError:
             wert = 0
-        return rgb_image + wert
-    #TODO Fix this! overflow on vector numbers with +
+
+       # Normalize the image to the range [0, 1]
+        normalized_image = rgb_image / 255.0
+
+        # Add brightness and clip values to the valid range [0, 1]
+        brightened_image = np.clip(normalized_image + wert / 255.0, 0, 1)
+
+        # Convert back to the range [0, 255]
+        new_image = (brightened_image * 255).astype(np.uint8)
+
+        return new_image
 
     def apply_helligkeitsverminderung(self, rgb_image):
         try:
             wert = min(255,(abs(int(self.input_field.get()))))
         except ValueError:
             wert = 0
-        return rgb_image - wert
-        #TODO beschränkung auf mindestens 0 
-    #TODO Fix this! underflow on vector numbers with +
+        # Normalize the image to the range [0, 1]
+        normalized_image = rgb_image / 255.0
+
+        # Add brightness and clip values to the valid range [0, 1]
+        brightened_image = np.clip(normalized_image - wert / 255.0, 0, 1)
+
+        # Convert back to the range [0, 255]
+        new_image = (brightened_image * 255).astype(np.uint8)
+
+        return new_image
 
     def apply_kontrasterhoehung(self, rgb_image):
         try:
-            wert = min(255,(abs(int(self.input_field.get()))))
+            wert = max(0, float(self.input_field.get())) / 100.0
         except ValueError:
-            wert = 0
-        return rgb_image * max(1, wert)
-    #TODO Fix this! overflow on vector numbers with *
+            wert = 1.0
+
+        # Normalize the image to the range [0, 1]
+        normalized_image = rgb_image / 255.0
+
+        # Apply contrast adjustment with a center of 0.5 and scale by wert
+        contrasted_image = np.clip((normalized_image - 0.5) * wert + 0.5, 0, 1)
+
+        # Convert back to the range [0, 255]
+        new_image = (contrasted_image * 255).astype(np.uint8)
+
+        return new_image
 
     def apply_kontrastverminderung(self, rgb_image):
         try:
-            wert = min(255,(abs(int(self.input_field.get()))))
+            wert = max(0, float(self.input_field.get())) / 100.0
         except ValueError:
-            wert = 1
-        return rgb_image #/ max(1, wert)
-    #TODO Fix this! cant divide a rgb_image that easy 
+            wert = 1.0
+
+        # Normalize the image to the range [0, 1]
+        normalized_image = rgb_image / 255.0
+
+        # Apply contrast adjustment with a center of 0.5 and scale by wert
+        contrasted_image = np.clip((normalized_image - 0.5) / wert + 0.5, 0, 1)
+
+        # Convert back to the range [0, 255]
+        new_image = (contrasted_image * 255).astype(np.uint8)
+
+        return new_image
 
     def apply_normalisierung(self, rgb_image):
         return rgb_image #TODO
@@ -241,18 +288,56 @@ class PunktoperatorenApp:
     def apply_binarisierung(self, rgb_image):
         return rgb_image #TODO
     
-    #try:
-    #    Wert = min(255,(abs(int(self.input_field.get()))))
-    #except ValueError:
-    #    Wert = 0
-
     def update_button_style(self):
         pass  # Stil wird nun in set_active_button gesetzt
+
+    def set_active_color_button(self, button):
+        for color_button in self.color_buttons.values():
+            color_button.config(**self.button_style_inactive)
+    
+        self.active_color_button = button
+        self.active_color_button.config(**self.button_style_active)
+
+    def set_color_processing(self, color):
+        self.set_active_color_button(self.color_buttons[color])
+        self.set_processing_function(lambda rgb_image: self.apply_color_processing(rgb_image, color))
+        self.update_button_style()
+
+    def apply_color_processing(self, rgb_image, color):
+        if color == "Bunt":
+            return rgb_image
+        elif color == "Grau":
+            if len(rgb_image.shape) == 3 and rgb_image.shape[2] == 3:
+                # Convert color image to grayscale
+                return cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+            else:
+                # Image is already grayscale
+                return rgb_image
+        elif color == "Rot":
+            # Apply red color transformation
+            red_image = rgb_image * np.array([1, 0, 0])
+            # Ensure the result is of type np.uint8
+            return np.clip(red_image, 0, 255).astype(np.uint8)
+        elif color == "Grün":
+            # Apply green color transformation
+            green_image = rgb_image * np.array([0, 1, 0])
+            # Ensure the result is of type np.uint8
+            return np.clip(green_image, 0, 255).astype(np.uint8)
+        elif color == "Blau":
+            # Apply blue color transformation
+            blue_image = rgb_image * np.array([0, 0, 1])
+            # Ensure the result is of type np.uint8
+            return np.clip(blue_image, 0, 255).astype(np.uint8)
 
     def update_feed(self):
         ret, frame = self.cap.read()
         if ret:
             rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            # Apply color processing based on the active color button
+            if self.active_color_button:
+                color = self.active_color_button["text"]
+                rgb_image = self.apply_color_processing(rgb_image, color)
 
             # Verarbeitung für das Originalvideo
             processed_image_main = self.processing_function_main(rgb_image)
