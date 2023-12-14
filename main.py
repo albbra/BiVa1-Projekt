@@ -221,10 +221,18 @@ class PunktoperatorenApp:
         return 255 - rgb_image
     
     def apply_helligkeitserhoehung(self, rgb_image):
-        return rgb_image + 32 #TODO
+        try:
+            wert = abs(int(self.input_field.get()))
+        except ValueError:
+            wert = 0
+        return rgb_image + wert #TODO
     
     def apply_helligkeitsverminderung(self, rgb_image):
-        return rgb_image - 32 #TODO
+        try:
+            wert = abs(int(self.input_field.get()))
+        except ValueError:
+            wert = 0
+        return rgb_image - wert #TODO
 
     def apply_kontrasterhoehung(self, rgb_image):
         return rgb_image #TODO
