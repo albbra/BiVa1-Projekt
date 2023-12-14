@@ -28,12 +28,12 @@ class PunktoperatorenApp:
         self.fig_main, self.ax_main = plt.subplots()
         self.canvas_main = FigureCanvasTkAgg(self.fig_main, master=self.root)
         self.canvas_main_widget = self.canvas_main.get_tk_widget()
-        self.canvas_main_widget.grid(row=2, column=0, padx=10, pady=10)
+        self.canvas_main_widget.grid(row=3, column=0, padx=2, pady=2)
 
         self.fig_second, self.ax_second = plt.subplots()
         self.canvas_second = FigureCanvasTkAgg(self.fig_second, master=self.root)
         self.canvas_second_widget = self.canvas_second.get_tk_widget()
-        self.canvas_second_widget.grid(row=2, column=1, padx=10, pady=10)
+        self.canvas_second_widget.grid(row=3, column=1, padx=2, pady=2)
 
         self.create_widgets()
 
@@ -43,7 +43,7 @@ class PunktoperatorenApp:
 
         # Frame für die Buttons
         button_frame = tk.Frame(self.root)
-        button_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+        button_frame.grid(row=0, column=0, padx=2, pady=2, sticky="nw")
 
         # "Original" Button
         self.original_button = tk.Button(
@@ -107,15 +107,25 @@ class PunktoperatorenApp:
 
 
 
+        # Frame für Label und Input-Field
+        input_frame = tk.Frame(self.root)
+        input_frame.grid(row=1, column=0, padx=2, pady=2, sticky="nw")
 
+        # Label "Wert"
+        label_wert = tk.Label(input_frame, text="Wert:")
+        label_wert.grid(row=0, column=0, padx=2, pady=2, sticky="w")
+
+        #Input-Field
+        self.input_field = tk.Entry(input_frame)
+        self.input_field.grid(row=0, column=1, padx=2, pady=2, sticky="w")
 
         # Label für das Originalvideo
         self.label = tk.Label(self.root)
-        self.label.grid(row=1, column=0, padx=10, pady=10)
+        self.label.grid(row=2, column=0, padx=2, pady=0)
 
         # Label für das zweite Video (Punktoperatoren)
         self.label_original = tk.Label(self.root)
-        self.label_original.grid(row=1, column=1, padx=100, pady=10)  
+        self.label_original.grid(row=2, column=1, padx=50, pady=0)  
 
         self.update_feed()
 
@@ -236,6 +246,11 @@ class PunktoperatorenApp:
     #def apply_a(self, rgb_image):
     #    return rgb_image
     # halt nicht rgb_image sondern das bearbeitete Bild zurückgeben - Albert
+    # wenn ihr den Input braucht für die Punktoperation, dann verwendet:
+    #try:
+    #    Wert = abs(int(self.input_field.get()))
+    #except ValueError:
+    #    Wert = 0
 
 
 
