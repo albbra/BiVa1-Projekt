@@ -80,32 +80,24 @@ class PunktoperatorenApp:
             button_frame, text="Kontrastverminderung", command=self.apply_kontrastverminderung_processing, **self.button_style_inactive)
         self.kontrastverminderung_button.pack(side=tk.LEFT)
 
+        # Frame für die Buttons2
+        button_frame2 = tk.Frame(self.root)
+        button_frame2.grid(row=0, column=1, padx=10, pady=2, sticky="nw")
+
         # "Normalisierung" Button
         self.normalisierung_button = tk.Button(
-            button_frame, text="Normalisierung", command=self.apply_normalisierung_processing, **self.button_style_inactive)
+            button_frame2, text="Normalisierung", command=self.apply_normalisierung_processing, **self.button_style_inactive)
         self.normalisierung_button.pack(side=tk.LEFT)
 
         # "Histogrammausgleich" Button
         self.histogrammausgleich_button = tk.Button(
-            button_frame, text="Histogrammausgleich", command=self.apply_histogrammausgleich_processing, **self.button_style_inactive)
+            button_frame2, text="Histogrammausgleich", command=self.apply_histogrammausgleich_processing, **self.button_style_inactive)
         self.histogrammausgleich_button.pack(side=tk.LEFT)
 
         # "Binarisierung" Button
         self.binarisierung_button = tk.Button(
-            button_frame, text="Binarisierung", command=self.apply_binarisierung_processing, **self.button_style_inactive)
+            button_frame2, text="Binarisierung", command=self.apply_binarisierung_processing, **self.button_style_inactive)
         self.binarisierung_button.pack(side=tk.LEFT)
-
-        #Hier weitere Buttons anlegen zum Darstellen    <-----------------------------------------------------------------
-        #genauso wie oben runterkopieren und namen umändern - Albert 
-        #Zum Beispiel für eine Punktoperation a:
-        # "a" Button
-        #self.a_button = tk.Button(
-        #    button_frame, text="a", command=self.apply_a_processing, **self.button_style_inactive)
-        #self.a_button.pack(side=tk.LEFT)
-
-
-
-
 
         # Frame für Label und Input-Field
         input_frame = tk.Frame(self.root)
@@ -125,7 +117,7 @@ class PunktoperatorenApp:
 
         # Label für das zweite Video (Punktoperatoren)
         self.label_original = tk.Label(self.root)
-        self.label_original.grid(row=2, column=1, padx=50, pady=0)  
+        self.label_original.grid(row=2, column=1, padx=10, pady=0)  
 
         self.update_feed()
 
@@ -189,19 +181,6 @@ class PunktoperatorenApp:
             self.set_processing_function(self.apply_binarisierung)
             self.update_button_style()
 
-
-    #Nun geben wir den Buttons auch Logik    <-----------------------------------------------------------------
-    #Beispiel wieder für a
-    #def apply_a_processing(self):
-    #    if self.active_button != self.a_button:
-    #        self.set_active_button(self.a_button)
-    #        self.set_processing_function(self.apply_a)
-    #        self.update_button_style()
-
-
-
-
-
     def set_active_button(self, button):
         if self.active_button:
             self.active_button.config(**self.button_style_inactive)
@@ -222,35 +201,36 @@ class PunktoperatorenApp:
     
     def apply_helligkeitserhoehung(self, rgb_image):
         try:
-            wert = abs(int(self.input_field.get()))
+            wert = min(255,(abs(int(self.input_field.get()))))
         except ValueError:
             wert = 0
         return rgb_image + wert
-        #TODO beschränkung auf maximal 255
-    
+    #TODO Fix this! overflow on vector numbers with +
+
     def apply_helligkeitsverminderung(self, rgb_image):
         try:
-            wert = abs(int(self.input_field.get()))
+            wert = min(255,(abs(int(self.input_field.get()))))
         except ValueError:
             wert = 0
         return rgb_image - wert
-        #TODO beschränkung auf mindestens 0
+        #TODO beschränkung auf mindestens 0 
+    #TODO Fix this! underflow on vector numbers with +
 
     def apply_kontrasterhoehung(self, rgb_image):
         try:
-            wert = abs(int(self.input_field.get()))
+            wert = min(255,(abs(int(self.input_field.get()))))
         except ValueError:
             wert = 0
-        return rgb_image * wert
-        #TODO beschränkung auf maximal 255
+        return rgb_image * max(1, wert)
+    #TODO Fix this! overflow on vector numbers with *
 
     def apply_kontrastverminderung(self, rgb_image):
         try:
-            wert = abs(int(self.input_field.get()))
+            wert = min(255,(abs(int(self.input_field.get()))))
         except ValueError:
-            wert = 0
-        return rgb_image /wert
-        #TODO hängt sich auf
+            wert = 1
+        return rgb_image #/ max(1, wert)
+    #TODO Fix this! cant divide a rgb_image that easy 
 
     def apply_normalisierung(self, rgb_image):
         return rgb_image #TODO
@@ -261,21 +241,10 @@ class PunktoperatorenApp:
     def apply_binarisierung(self, rgb_image):
         return rgb_image #TODO
     
-    #Hier legt ihr noch die richtige Funktion für den Punktoperator an    <-----------------------------------------------------------------
-    #Wieder am Beispiel für a
-    #def apply_a(self, rgb_image):
-    #    return rgb_image
-    # halt nicht rgb_image sondern das bearbeitete Bild zurückgeben - Albert
-    # wenn ihr den Input braucht für die Punktoperation, dann verwendet:
     #try:
-    #    Wert = abs(int(self.input_field.get()))
+    #    Wert = min(255,(abs(int(self.input_field.get()))))
     #except ValueError:
     #    Wert = 0
-
-
-
-
-
 
     def update_button_style(self):
         pass  # Stil wird nun in set_active_button gesetzt
