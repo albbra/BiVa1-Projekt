@@ -225,20 +225,32 @@ class PunktoperatorenApp:
             wert = abs(int(self.input_field.get()))
         except ValueError:
             wert = 0
-        return rgb_image + wert #TODO
+        return rgb_image + wert
+        #TODO beschränkung auf maximal 255
     
     def apply_helligkeitsverminderung(self, rgb_image):
         try:
             wert = abs(int(self.input_field.get()))
         except ValueError:
             wert = 0
-        return rgb_image - wert #TODO
+        return rgb_image - wert
+        #TODO beschränkung auf mindestens 0
 
     def apply_kontrasterhoehung(self, rgb_image):
-        return rgb_image #TODO
+        try:
+            wert = abs(int(self.input_field.get()))
+        except ValueError:
+            wert = 0
+        return rgb_image * wert
+        #TODO beschränkung auf maximal 255
 
     def apply_kontrastverminderung(self, rgb_image):
-        return rgb_image #TODO
+        try:
+            wert = abs(int(self.input_field.get()))
+        except ValueError:
+            wert = 0
+        return rgb_image /wert
+        #TODO hängt sich auf
 
     def apply_normalisierung(self, rgb_image):
         return rgb_image #TODO
