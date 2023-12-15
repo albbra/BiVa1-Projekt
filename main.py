@@ -96,6 +96,11 @@ class PunktoperatorenApp:
             button_frame2, text="Binarisierung", command=self.apply_binarisierung_processing, **self.button_style_inactive)
         self.binarisierung_button.pack(side=tk.LEFT)
 
+        # "Gamma-Korrektur" Button
+        self.gammakorrektur_button = tk.Button(
+            button_frame2, text="Gamma-Korrektur", command=self.apply_gammakorrektur_processing, **self.button_style_inactive)
+        self.gammakorrektur_button.pack(side=tk.LEFT)
+
         # Frame für Label und Input-Field
         input_frame = tk.Frame(self.root)
         input_frame.grid(row=1, column=0, padx=2, pady=2, sticky="nw")
@@ -193,6 +198,12 @@ class PunktoperatorenApp:
             self.set_active_button(self.binarisierung_button)
             self.set_processing_function(self.apply_binarisierung)
             self.update_button_style()
+
+    def apply_gammakorrektur_processing(self):
+        if self.active_button != self.gammakorrektur_button:
+            self.set_active_button(self.gammakorrektur_button)
+            self.set_processing_function(self.apply_gammakorrektur)
+            self.update_button_style()   
 
     def set_active_button(self, button):
         if self.active_button:
@@ -324,6 +335,9 @@ class PunktoperatorenApp:
         new_image = (binary_image * 255).astype(np.uint8)
 
         return new_image
+    
+    def apply_gammakorrektur(self, rgb_image):
+        return rgb_image #TODO
     
     def update_button_style(self):
         pass  # Stil wird nun in set_active_button gesetzt
