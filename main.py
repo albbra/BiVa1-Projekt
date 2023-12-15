@@ -299,8 +299,13 @@ class PunktoperatorenApp:
         return rgb_image #TODO
 
     def apply_binarisierung(self, rgb_image):
-        #get grey image
-        grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        #get grey image  
+        if len(rgb_image.shape) == 3 and rgb_image.shape[2] == 3:
+            # Convert color image to grayscale
+            grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        else:
+            # Image is already grayscale
+            grey_image = rgb_image
 
         # Normalize the image to the range [0, 1]
         normalized_image = grey_image / 255.0
