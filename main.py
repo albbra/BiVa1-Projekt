@@ -101,6 +101,16 @@ class PunktoperatorenApp:
             button_frame2, text="Gamma-Korrektur", command=self.apply_gammakorrektur_processing, **self.button_style_inactive)
         self.gammakorrektur_button.pack(side=tk.LEFT)
 
+        # "Truncation" Button
+        self.truncation_button = tk.Button(
+            button_frame2, text="Truncation", command=self.apply_truncation_processing, **self.button_style_inactive)
+        self.truncation_button.pack(side=tk.LEFT)
+
+        # "Clipping" Button
+        self.clipping_button = tk.Button(
+            button_frame2, text="Clipping", command=self.apply_clipping_processing, **self.button_style_inactive)
+        self.clipping_button.pack(side=tk.LEFT)
+
         # Frame für Label und Input-Field
         input_frame = tk.Frame(self.root)
         input_frame.grid(row=1, column=0, padx=2, pady=2, sticky="nw")
@@ -134,8 +144,27 @@ class PunktoperatorenApp:
         for color in colors:
             button = tk.Button(button_frame3, text=color, command=lambda c=color: self.set_color_processing(c),
                               **self.button_style_inactive)
-            button.pack(side=tk.LEFT)
+            button.grid(row=0, column=len(self.color_buttons), padx=2, pady=2, sticky="w")
             self.color_buttons[color] = button
+
+        # Frame für die Buttons4
+        button_frame4 = tk.Frame(button_frame3)
+        button_frame4.grid(row=0,column=len(self.color_buttons), padx=10, pady=2, sticky="nw")
+
+        # "Otsu" Button
+        self.otsu_button = tk.Button(
+            button_frame4, text="Otsu", command=self.apply_otsu_processing, **self.button_style_inactive)
+        self.otsu_button.pack(side=tk.LEFT)
+
+        # "Logarithmus" Button
+        self.logarithmus_button = tk.Button(
+            button_frame4, text="Logarithmus", command=self.apply_logarithmus_processing, **self.button_style_inactive)
+        self.logarithmus_button.pack(side=tk.LEFT)
+
+        # "Exponential" Button
+        self.exponential_button = tk.Button(
+            button_frame4, text="Exponential", command=self.apply_exponential_processing, **self.button_style_inactive)
+        self.exponential_button.pack(side=tk.LEFT)
 
         self.update_feed()
 
@@ -204,6 +233,36 @@ class PunktoperatorenApp:
             self.set_active_button(self.gammakorrektur_button)
             self.set_processing_function(self.apply_gammakorrektur)
             self.update_button_style()   
+
+    def apply_truncation_processing(self):
+        if self.active_button != self.truncation_button:
+            self.set_active_button(self.truncation_button)
+            self.set_processing_function(self.apply_truncation)
+            self.update_button_style()
+
+    def apply_clipping_processing(self):
+        if self.active_button != self.clipping_button:
+            self.set_active_button(self.clipping_button)
+            self.set_processing_function(self.apply_clipping)
+            self.update_button_style()
+
+    def apply_otsu_processing(self):
+        if self.active_button != self.otsu_button:
+            self.set_active_button(self.otsu_button)
+            self.set_processing_function(self.apply_otsu)
+            self.update_button_style()
+
+    def apply_logarithmus_processing(self):
+        if self.active_button != self.logarithmus_button:
+            self.set_active_button(self.logarithmus_button)
+            self.set_processing_function(self.apply_logarithmus)
+            self.update_button_style()
+
+    def apply_exponential_processing(self):
+        if self.active_button != self.exponential_button:
+            self.set_active_button(self.exponential_button)
+            self.set_processing_function(self.apply_exponential)
+            self.update_button_style()
 
     def set_active_button(self, button):
         if self.active_button:
@@ -337,6 +396,21 @@ class PunktoperatorenApp:
         return new_image
     
     def apply_gammakorrektur(self, rgb_image):
+        return rgb_image #TODO
+    
+    def apply_truncation(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_clipping(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_otsu(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_logarithmus(self, rgb_image):
+        return rgb_image #TODO
+
+    def apply_exponential(self, rgb_image):
         return rgb_image #TODO
     
     def update_button_style(self):
