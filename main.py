@@ -405,7 +405,7 @@ class PunktoperatorenApp:
         try:    
             invGamma = 1.0 / wert
         except ZeroDivisionError:
-            invGamma = 1.0 / (wert + 0.00000001)
+            invGamma = 1.0 / (wert + 0.00000001) # verhindert Teilung durch 0
 
         table = [((i / 255) ** invGamma) * 255 for i in range(256)]
         table = np.array(table, np.uint8)
