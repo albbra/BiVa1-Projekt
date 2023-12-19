@@ -382,7 +382,7 @@ class PunktoperatorenApp:
 
         #entscheidungsgrenze
         try:
-            wert = min(100,max(0, float(self.input_field.get()))) / 100.0
+            wert = min(100, max(0, float(self.input_field.get()))) / 100.0
         except ValueError:
             wert = 0.5
         normalized_plus_image = normalized_image + wert
@@ -396,7 +396,20 @@ class PunktoperatorenApp:
         return new_image
     
     def apply_gammakorrektur(self, rgb_image):
-        return rgb_image #TODO
+        try:
+            wert = max(0, float(self.input_field.get()))
+        except ValueError:
+            wert = 1.0
+
+        # https://lindevs.com/apply-gamma-correction-to-an-image-using-opencv
+        try:    
+            invGamma = 1.0 / wert
+        except ZeroDivisionError:
+            invGamma = 1.0 / (wert + 0.00000001) # verhindert Teilung durch 0
+
+        table = [((i / 255) ** invGamma) * 255 for i in range(256)]
+        table = np.array(table, np.uint8)
+        return cv2.LUT(rgb_image, table)
     
     def apply_truncation(self, rgb_image):
         return rgb_image #TODO
