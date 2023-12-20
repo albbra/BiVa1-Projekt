@@ -277,7 +277,15 @@ class PunktoperatorenApp:
         return rgb_image
 
     def apply_grey(self, rgb_image):
-        return cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        if len(rgb_image.shape) == 3 and rgb_image.shape[2] == 3:
+            # Convert color image to grayscale
+            grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        else:
+            # Image is already grayscale
+            grey_image = rgb_image
+
+
+        return grey_image
 
     def apply_negative(self, rgb_image):
         return 255 - rgb_image
@@ -516,7 +524,7 @@ class PunktoperatorenApp:
 
     def on_closing(self):
         self.cap.release()
-        self.root.destroy()
+        self.root.quit()
 
 if __name__ == "__main__":
     root = tk.Tk()
