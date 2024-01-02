@@ -57,39 +57,29 @@ class PunktoperatorenApp:
             button_frame, text="Negativ", command=self.apply_negative_processing, **self.button_style_inactive)
         self.negative_button.pack(side=tk.LEFT)
 
-        # "Helligkeitserhöhung" Button
-        self.helligkeitserhoehung_button = tk.Button(
-            button_frame, text="Helligkeitserhöhung", command=self.apply_helligkeitserhoehung_processing, **self.button_style_inactive)
-        self.helligkeitserhoehung_button.pack(side=tk.LEFT)
+        # "Helligkeitsveränderung" Button
+        self.helligkeit_button = tk.Button(
+            button_frame, text="Helligkeitsveränderung", command=self.apply_helligkeit_processing, **self.button_style_inactive)
+        self.helligkeit_button.pack(side=tk.LEFT)
 
-        # "Helligkeitsverminderung" Button
-        self.helligkeitsverminderung_button = tk.Button(
-            button_frame, text="Helligkeitsverminderung", command=self.apply_helligkeitsverminderung_processing, **self.button_style_inactive)
-        self.helligkeitsverminderung_button.pack(side=tk.LEFT)
-
-        # "Kontrasterhöhung" Button
-        self.kontrasterhoehung_button = tk.Button(
-            button_frame, text="Kontrasterhöhung", command=self.apply_kontrasterhoehung_processing, **self.button_style_inactive)
-        self.kontrasterhoehung_button.pack(side=tk.LEFT)
-
-        # "Kontrastverminderung" Button
-        self.kontrastverminderung_button = tk.Button(
-            button_frame, text="Kontrastverminderung", command=self.apply_kontrastverminderung_processing, **self.button_style_inactive)
-        self.kontrastverminderung_button.pack(side=tk.LEFT)
-
-        # Frame für die Buttons2
-        button_frame2 = tk.Frame(self.root)
-        button_frame2.grid(row=0, column=1, padx=10, pady=2, sticky="nw")
+        # "Kontrastveränderung" Button
+        self.kontrast_button = tk.Button(
+            button_frame, text="Kontrastveränderung", command=self.apply_kontrast_processing, **self.button_style_inactive)
+        self.kontrast_button.pack(side=tk.LEFT)
 
         # "Normalisierung" Button
         self.normalisierung_button = tk.Button(
-            button_frame2, text="Normalisierung", command=self.apply_normalisierung_processing, **self.button_style_inactive)
+            button_frame, text="Normalisierung", command=self.apply_normalisierung_processing, **self.button_style_inactive)
         self.normalisierung_button.pack(side=tk.LEFT)
 
         # "Histogrammausgleich" Button
         self.histogrammausgleich_button = tk.Button(
-            button_frame2, text="Histogrammausgleich", command=self.apply_histogrammausgleich_processing, **self.button_style_inactive)
+            button_frame, text="Histogrammausgleich", command=self.apply_histogrammausgleich_processing, **self.button_style_inactive)
         self.histogrammausgleich_button.pack(side=tk.LEFT)
+
+        # Frame für die Buttons2
+        button_frame2 = tk.Frame(self.root)
+        button_frame2.grid(row=0, column=1, padx=10, pady=2, sticky="nw")
 
         # "Binarisierung" Button
         self.binarisierung_button = tk.Button(
@@ -111,7 +101,22 @@ class PunktoperatorenApp:
             button_frame2, text="Clipping", command=self.apply_clipping_processing, **self.button_style_inactive)
         self.clipping_button.pack(side=tk.LEFT)
 
-        # Frame für Label und Input-Field
+        # "Otsu" Button
+        self.otsu_button = tk.Button(
+            button_frame2, text="Otsu", command=self.apply_otsu_processing, **self.button_style_inactive)
+        self.otsu_button.pack(side=tk.LEFT)
+
+        # "Logarithmus" Button
+        self.logarithmus_button = tk.Button(
+            button_frame2, text="Logarithmus", command=self.apply_logarithmus_processing, **self.button_style_inactive)
+        self.logarithmus_button.pack(side=tk.LEFT)
+
+        # "Exponential" Button
+        self.exponential_button = tk.Button(
+            button_frame2, text="Exponential", command=self.apply_exponential_processing, **self.button_style_inactive)
+        self.exponential_button.pack(side=tk.LEFT)
+
+        # Frame für Label, Input-Feld und WertebereichHilfe
         input_frame = tk.Frame(self.root)
         input_frame.grid(row=1, column=0, padx=2, pady=2, sticky="nw")
 
@@ -122,6 +127,10 @@ class PunktoperatorenApp:
         #Input-Field
         self.input_field = tk.Entry(input_frame)
         self.input_field.grid(row=0, column=1, padx=2, pady=2, sticky="w")
+
+        # Label "Eingabe Wertebereich"
+        self.label_hilfe = tk.Label(input_frame, text=" ")
+        self.label_hilfe.grid(row=0, column=2, padx=2, pady=2, sticky="w")
 
         # Label für das Originalvideo
         self.label = tk.Label(self.root)
@@ -147,25 +156,6 @@ class PunktoperatorenApp:
             button.grid(row=0, column=len(self.color_buttons), padx=2, pady=2, sticky="w")
             self.color_buttons[color] = button
 
-        # Frame für die Buttons4
-        button_frame4 = tk.Frame(button_frame3)
-        button_frame4.grid(row=0,column=len(self.color_buttons), padx=10, pady=2, sticky="nw")
-
-        # "Otsu" Button
-        self.otsu_button = tk.Button(
-            button_frame4, text="Otsu", command=self.apply_otsu_processing, **self.button_style_inactive)
-        self.otsu_button.pack(side=tk.LEFT)
-
-        # "Logarithmus" Button
-        self.logarithmus_button = tk.Button(
-            button_frame4, text="Logarithmus", command=self.apply_logarithmus_processing, **self.button_style_inactive)
-        self.logarithmus_button.pack(side=tk.LEFT)
-
-        # "Exponential" Button
-        self.exponential_button = tk.Button(
-            button_frame4, text="Exponential", command=self.apply_exponential_processing, **self.button_style_inactive)
-        self.exponential_button.pack(side=tk.LEFT)
-
         self.update_feed()
 
     def apply_original_processing(self):
@@ -186,28 +176,16 @@ class PunktoperatorenApp:
             self.set_processing_function(self.apply_negative)
             self.update_button_style()
 
-    def apply_helligkeitserhoehung_processing(self):
-        if self.active_button != self.helligkeitserhoehung_button:
-            self.set_active_button(self.helligkeitserhoehung_button)
-            self.set_processing_function(self.apply_helligkeitserhoehung)
+    def apply_helligkeit_processing(self):
+        if self.active_button != self.helligkeit_button:
+            self.set_active_button(self.helligkeit_button)
+            self.set_processing_function(self.apply_helligkeit)
             self.update_button_style()
 
-    def apply_helligkeitsverminderung_processing(self):
-        if self.active_button != self.helligkeitsverminderung_button:
-            self.set_active_button(self.helligkeitsverminderung_button)
-            self.set_processing_function(self.apply_helligkeitsverminderung)
-            self.update_button_style()
-
-    def apply_kontrasterhoehung_processing(self):
-        if self.active_button != self.kontrasterhoehung_button:
-            self.set_active_button(self.kontrasterhoehung_button)
-            self.set_processing_function(self.apply_kontrasterhoehung)
-            self.update_button_style()
-
-    def apply_kontrastverminderung_processing(self):
-        if self.active_button != self.kontrastverminderung_button:
-            self.set_active_button(self.kontrastverminderung_button)
-            self.set_processing_function(self.apply_kontrastverminderung)
+    def apply_kontrast_processing(self):
+        if self.active_button != self.kontrast_button:
+            self.set_active_button(self.kontrast_button)
+            self.set_processing_function(self.apply_kontrast)
             self.update_button_style()
 
     def apply_normalisierung_processing(self):
@@ -290,11 +268,14 @@ class PunktoperatorenApp:
     def apply_negative(self, rgb_image):
         return 255 - rgb_image
     
-    def apply_helligkeitserhoehung(self, rgb_image):
+    def apply_helligkeit(self, rgb_image):
         try:
-            wert = min(255,(abs(int(self.input_field.get()))))
+            wert = np.clip(int(self.input_field.get()), -255, 255)
         except ValueError:
             wert = 0
+
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f"Wertebereich: -255 >= {wert} >= 255")
 
        # Normalize the image to the range [0, 1]
         normalized_image = rgb_image / 255.0
@@ -307,50 +288,25 @@ class PunktoperatorenApp:
 
         return new_image
 
-    def apply_helligkeitsverminderung(self, rgb_image):
+    def apply_kontrast(self, rgb_image):
         try:
-            wert = min(255,(abs(int(self.input_field.get()))))
-        except ValueError:
-            wert = 0
-        # Normalize the image to the range [0, 1]
-        normalized_image = rgb_image / 255.0
-
-        # Add brightness and clip values to the valid range [0, 1]
-        brightened_image = np.clip(normalized_image - wert / 255.0, 0, 1)
-
-        # Convert back to the range [0, 255]
-        new_image = (brightened_image * 255).astype(np.uint8)
-
-        return new_image
-
-    def apply_kontrasterhoehung(self, rgb_image):
-        try:
-            wert = max(0, float(self.input_field.get())) / 100.0
+            wert = max(0, float(self.input_field.get()))
         except ValueError:
             wert = 1.0
 
-        # Normalize the image to the range [0, 1]
-        normalized_image = rgb_image / 255.0
-
-        # Apply contrast adjustment with a center of 0.5 and scale by wert
-        contrasted_image = np.clip((normalized_image - 0.5) * wert + 0.5, 0, 1)
-
-        # Convert back to the range [0, 255]
-        new_image = (contrasted_image * 255).astype(np.uint8)
-
-        return new_image
-
-    def apply_kontrastverminderung(self, rgb_image):
-        try:
-            wert = max(0, float(self.input_field.get())) / 100.0
-        except ValueError:
-            wert = 1.0
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f"Wertebereich: {wert} ( 0.0 <= x <1.0 für Verminderung, 1.0 < x für Erhöhung)")
 
         # Normalize the image to the range [0, 1]
         normalized_image = rgb_image / 255.0
 
-        # Apply contrast adjustment with a center of 0.5 and scale by wert
-        contrasted_image = np.clip((normalized_image - 0.5) / wert + 0.5, 0, 1)
+        # Decide whether to apply contrast enhancement or reduction
+        if wert >= 0:
+            # Apply contrast adjustment with a center of 0.5 and scale by wert for enhancement
+            contrasted_image = np.clip((normalized_image - 0.5) * wert + 0.5, 0, 1)
+        else:
+            # Apply contrast adjustment with a center of 0.5 and scale by 1/abs(wert) for reduction
+            contrasted_image = np.clip((normalized_image - 0.5) / abs(wert) + 0.5, 0, 1)
 
         # Convert back to the range [0, 255]
         new_image = (contrasted_image * 255).astype(np.uint8)
@@ -358,6 +314,9 @@ class PunktoperatorenApp:
         return new_image
 
     def apply_normalisierung(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         # Normalize the image to the range [0, 1]
         normalized_image = rgb_image / 255.0
 
@@ -374,6 +333,8 @@ class PunktoperatorenApp:
         return new_image
 
     def apply_histogrammausgleich(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
         return rgb_image #TODO
 
     def apply_binarisierung(self, rgb_image):
@@ -390,10 +351,13 @@ class PunktoperatorenApp:
 
         #entscheidungsgrenze
         try:
-            wert = min(100, max(0, float(self.input_field.get()))) / 100.0
+            wert = max(0, float(self.input_field.get()))
         except ValueError:
             wert = 0.5
         normalized_plus_image = normalized_image + wert
+
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f"Wertebereich: 0.0 >= {wert} >= 1.0")
 
         # round it down to 0 or 1
         binary_image = normalized_plus_image.astype(np.uint8)
@@ -409,6 +373,9 @@ class PunktoperatorenApp:
         except ValueError:
             wert = 1.0
 
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f"Wertebereich: 0 >= {wert} ")
+
         # https://lindevs.com/apply-gamma-correction-to-an-image-using-opencv
         try:    
             invGamma = 1.0 / wert
@@ -420,18 +387,33 @@ class PunktoperatorenApp:
         return cv2.LUT(rgb_image, table)
     
     def apply_truncation(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return rgb_image #TODO
 
     def apply_clipping(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return rgb_image #TODO
 
     def apply_otsu(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return rgb_image #TODO
 
     def apply_logarithmus(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return rgb_image #TODO
 
     def apply_exponential(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return rgb_image #TODO
     
     def update_button_style(self):
@@ -474,16 +456,33 @@ class PunktoperatorenApp:
             blue_image = rgb_image * np.array([0, 0, 1])
             # Ensure the result is of type np.uint8
             return np.clip(blue_image, 0, 255).astype(np.uint8)
+        
+    def set_index(self, color):
+        if color == "Bunt":
+            return 0
+        elif color == "Grau":
+            return 0
+        elif color == "Rot":
+            return 0
+        elif color == "Grün":
+            return 1
+        elif color == "Blau":
+            return 2
+        else:
+            return 0
 
     def update_feed(self):
         ret, frame = self.cap.read()
         if ret:
             rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
+            self.index = 0
+
             # Apply color processing based on the active color button
             if self.active_color_button:
                 color = self.active_color_button["text"]
                 rgb_image = self.apply_color_processing(rgb_image, color)
+                self.index = self.set_index(color)
 
             # Verarbeitung für das Originalvideo
             processed_image_main = self.processing_function_main(rgb_image)
@@ -496,7 +495,7 @@ class PunktoperatorenApp:
             self.label.config(image=img_tk_main)
 
             # Berechne und zeichne Histogramm für Originalvideo
-            hist_main = cv2.calcHist([processed_image_main], [0], None, [256], [0, 256])
+            hist_main = cv2.calcHist([processed_image_main], [self.index], None, [256], [0, 256])
             self.ax_main.clear()
             self.ax_main.plot(hist_main)
             self.ax_main.set_title('Histogramm Originalvideo')
@@ -513,7 +512,7 @@ class PunktoperatorenApp:
             self.label_original.config(image=img_tk_second)
 
             # Berechne und zeichne Histogramm für das zweite Video 
-            hist_second = cv2.calcHist([processed_image_second], [0], None, [256], [0, 256])
+            hist_second = cv2.calcHist([processed_image_second], [self.index], None, [256], [0, 256])
             self.ax_second.clear()
             self.ax_second.plot(hist_second)
             self.ax_second.set_title('Histogramm Punktoperator')
