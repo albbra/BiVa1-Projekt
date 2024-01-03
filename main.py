@@ -335,7 +335,17 @@ class PunktoperatorenApp:
     def apply_histogrammausgleich(self, rgb_image):
         # Wertebereich-Text für das Label aktualisieren
         self.label_hilfe.config(text=f" ")
-        return rgb_image #TODO
+
+        # Konvertiere Bild in Graustufen, falls es im Farbmodus vorliegt
+        grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+
+        # Wende Histogrammausgleich an
+        equalized_image = cv2.equalizeHist(grey_image)
+
+        # Konvertiere wieder zurück in RGB
+        equalized_rgb_image = cv2.cvtColor(equalized_image, cv2.COLOR_GRAY2RGB)
+        
+        return equalized_rgb_image
 
     def apply_binarisierung(self, rgb_image):
         #get grey image  
@@ -390,31 +400,63 @@ class PunktoperatorenApp:
         # Wertebereich-Text für das Label aktualisieren
         self.label_hilfe.config(text=f" ")
 
-        return rgb_image #TODO
+        #Führe Truncation für jeden Kanal separat durch
+        truncated_image = np.clip(rgb_image, 0, 150)
+
+        return truncated_image
 
     def apply_clipping(self, rgb_image):
         # Wertebereich-Text für das Label aktualisieren
         self.label_hilfe.config(text=f" ")
 
-        return rgb_image #TODO
+        # Clipping für jeden Kanal separat durchführen
+        clipped_image = np.clip(rgb_image, 50,200)
+
+        return clipped_image
 
     def apply_otsu(self, rgb_image):
         # Wertebereich-Text für das Label aktualisieren
         self.label_hilfe.config(text=f" ")
 
-        return rgb_image #TODO
+        # Konvertiere Bild in Graustufen
+        grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+
+        # Wende Otsus Schwellenwertmethode an
+        _, otsu_image = cv2.threshold(grey_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+        # Konvertiere Bild zurück in RGB
+        otsu_rgb_image = cv2.cvtColor(otsu_image, cv2.COLOR_GRAY2RGB)
+
+        return otsu_rgb_image
 
     def apply_logarithmus(self, rgb_image):
         # Wertebereich-Text für das Label aktualisieren
         self.label_hilfe.config(text=f" ")
 
-        return rgb_image #TODO
+        # Wende Logartihmus- Transformation für jeden Kanal separat an
+        logarithmic_image = np.log1p(rgb_image.astype(np.float32))
+
+        #Konvertiere die Werte zurück in Bereich [0, 255]
+        logarithmic_image = (logarithmic_image / logarithmic_image.max()) * 255
+        logarithmic_image = logarithmic_image.astype(np.uint8)
+        
+        return logarithmic_image
 
     def apply_exponential(self, rgb_image):
         # Wertebereich-Text für das Label aktualisieren
         self.label_hilfe.config(text=f" ")
 
-        return rgb_image #TODO
+        # Normalisiere Pixelwerte auf Bereich [0, 1]
+        normalized_image = rgb_image / 255.0
+
+        # Wende Exponential-Transformation für jeden Kanal separat an
+        exponential_image = np.exp(normalized_image)
+
+        # Konvertiere Werte zurück in Bereich [0, 255]
+        exponential_image = (exponential_image / exponential_image.max()) * 255
+        exponential_image = exponential_image.astype(np.uint8)
+
+        return exponential_image
     
     def update_button_style(self):
         pass  # Stil wird nun in set_active_button gesetzt
