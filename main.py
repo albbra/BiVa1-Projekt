@@ -252,9 +252,15 @@ class PunktoperatorenApp:
         self.processing_function_second = processing_function
 
     def apply_original(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return rgb_image
 
     def apply_grey(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         if len(rgb_image.shape) == 3 and rgb_image.shape[2] == 3:
             # Convert color image to grayscale
             grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
@@ -266,6 +272,9 @@ class PunktoperatorenApp:
         return grey_image
 
     def apply_negative(self, rgb_image):
+        # Wertebereich-Text für das Label aktualisieren
+        self.label_hilfe.config(text=f" ")
+
         return 255 - rgb_image
     
     def apply_helligkeit(self, rgb_image):
@@ -552,6 +561,10 @@ class PunktoperatorenApp:
             img_tk_second = ImageTk.PhotoImage(image=img_second)
             self.label_original.img = img_tk_second
             self.label_original.config(image=img_tk_second)
+
+            #Bugfix: Falls verarbeitetes Video grau ist, ließt hist nur den ersten Kannal
+            if self.active_button in [self.grey_button, self.binarisierung_button]:
+                self.index = 0
 
             # Berechne und zeichne Histogramm für das zweite Video 
             hist_second = cv2.calcHist([processed_image_second], [self.index], None, [256], [0, 256])
