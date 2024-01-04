@@ -346,7 +346,12 @@ class PunktoperatorenApp:
         self.label_hilfe.config(text=f" ")
 
         # Konvertiere Bild in Graustufen, falls es im Farbmodus vorliegt
-        grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        if len(rgb_image.shape) == 3 and rgb_image.shape[2] == 3:
+            # Convert color image to grayscale
+            grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        else:
+            # Image is already grayscale
+            grey_image = rgb_image
 
         # Wende Histogrammausgleich an
         equalized_image = cv2.equalizeHist(grey_image)
@@ -428,7 +433,12 @@ class PunktoperatorenApp:
         self.label_hilfe.config(text=f" ")
 
         # Konvertiere Bild in Graustufen
-        grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        if len(rgb_image.shape) == 3 and rgb_image.shape[2] == 3:
+            # Convert color image to grayscale
+            grey_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+        else:
+            # Image is already grayscale
+            grey_image = rgb_image
 
         # Wende Otsus Schwellenwertmethode an
         _, otsu_image = cv2.threshold(grey_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
