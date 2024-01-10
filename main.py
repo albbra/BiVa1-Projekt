@@ -366,17 +366,17 @@ class PunktoperatorenApp:
         return new_image
 
     def apply_histogrammausgleich(self, rgb_image): # TODO
-        return rgb_image
-        # if(len(rgb_image.shape) == 3): # Wenn Bild farbig ist
-        #     (b_channel, g_channel, r_channel) = cv2.split(rgb_image)
-        #     b_channel = cv2.equalizeHist(b_channel)
-        #     g_channel = cv2.equalizeHist(g_channel)
-        #     r_channel = cv2.equalizeHist(r_channel)
-        #     return cv2.merge((b_channel, g_channel, r_channel))
-        # elif(len(rgb_image.shape) == 1): # Wenn Bild in Graustufen
-        #     return cv2.equalizeHist(rgb_image)
-        # else:
-        #     return rgb_image
+        # return rgb_image
+        if(len(rgb_image.shape) == 3): # Wenn Bild farbig ist
+            (b_channel, g_channel, r_channel) = cv2.split(rgb_image)
+            b_channel = cv2.equalizeHist(b_channel)
+            g_channel = cv2.equalizeHist(g_channel)
+            r_channel = cv2.equalizeHist(r_channel)
+            return cv2.merge((b_channel, g_channel, r_channel))
+        elif(len(rgb_image.shape) == 1): # Wenn Bild in Graustufen
+            return cv2.equalizeHist(rgb_image)
+        else:
+            return rgb_image
 
     def apply_binarisierung(self, rgb_image):
         #get grey image  
